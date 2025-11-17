@@ -21,9 +21,11 @@ class ToolTipContent extends StatelessWidget {
     required this.tooltipActions,
     required this.textColor,
     this.title,
+    this.titleTextSpans,
     this.titleTextStyle,
     this.descTextStyle,
     this.titlePadding,
+    this.descriptionTextSpans,
     this.descriptionPadding,
     this.titleTextDirection,
     this.descriptionTextDirection,
@@ -34,8 +36,10 @@ class ToolTipContent extends StatelessWidget {
         );
 
   final String? title;
+  final List<TextSpan>? titleTextSpans;
   final TextAlign titleTextAlign;
   final String? description;
+  final List<TextSpan>? descriptionTextSpans;
   final TextAlign descriptionTextAlign;
   final AlignmentGeometry titleAlignment;
   final AlignmentGeometry descriptionAlignment;
@@ -51,8 +55,7 @@ class ToolTipContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final shouldShowActionsInside =
-        tooltipActions.isNotEmpty && tooltipActionConfig.position.isInside;
+    final shouldShowActionsInside = tooltipActions.isNotEmpty && tooltipActionConfig.position.isInside;
     final textTheme = Theme.of(context).textTheme;
 
     // Build title widget
@@ -65,8 +68,8 @@ class ToolTipContent extends StatelessWidget {
         alignment: titleAlignment,
         textColor: textColor,
         textDirection: titleTextDirection,
-        textStyle: titleTextStyle ??
-            textTheme.titleLarge?.merge(TextStyle(color: textColor)),
+        textStyle: titleTextStyle ?? textTheme.titleLarge?.merge(TextStyle(color: textColor)),
+        textSpans: titleTextSpans,
       );
     }
 
@@ -80,8 +83,8 @@ class ToolTipContent extends StatelessWidget {
         alignment: descriptionAlignment,
         textColor: textColor,
         textDirection: descriptionTextDirection,
-        textStyle: descTextStyle ??
-            textTheme.titleSmall?.merge(TextStyle(color: textColor)),
+        textStyle: descTextStyle ?? textTheme.titleSmall?.merge(TextStyle(color: textColor)),
+        textSpans: descriptionTextSpans,
       );
     }
 
@@ -100,8 +103,7 @@ class ToolTipContent extends StatelessWidget {
       children: <Widget>[
         if (titleWidget != null) titleWidget,
         if (descriptionWidget != null) descriptionWidget,
-        if (actionWidget != null &&
-            tooltipActionConfig.position.isInsideVertical) ...[
+        if (actionWidget != null && tooltipActionConfig.position.isInsideVertical) ...[
           SizedBox(
             height: tooltipActionConfig.gapBetweenContentAndAction,
           ),
@@ -111,8 +113,7 @@ class ToolTipContent extends StatelessWidget {
     );
 
     // If no horizontal action positioning, return vertical layout
-    if (actionWidget == null ||
-        !tooltipActionConfig.position.isInsideHorizontal) {
+    if (actionWidget == null || !tooltipActionConfig.position.isInsideHorizontal) {
       return contentColumn;
     }
 

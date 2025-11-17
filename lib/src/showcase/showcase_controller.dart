@@ -102,8 +102,7 @@ class ShowcaseController {
   FloatingActionWidget? globalFloatingActionWidget;
 
   /// Captured inherited widget data from showcase context
-  late final FlutterInheritedData inheritedData =
-      FlutterInheritedData.fromContext(_context);
+  late final FlutterInheritedData inheritedData = FlutterInheritedData.fromContext(_context);
 
   /// Returns the Showcase widget configuration.
   ///
@@ -148,9 +147,7 @@ class ShowcaseController {
       _context,
       shouldUpdateOverlay: shouldUpdateOverlay,
     );
-    globalFloatingActionWidget = showcaseView
-        .getFloatingActionWidget(config.showcaseKey)
-        ?.call(_context);
+    globalFloatingActionWidget = showcaseView.getFloatingActionWidget(config.showcaseKey)?.call(_context);
   }
 
   /// Used to scroll the target into view.
@@ -194,8 +191,7 @@ class ShowcaseController {
   /// .disableBarrierInteraction] settings.
   void handleBarrierTap() {
     config.onBarrierClick?.call();
-    if (showcaseView.disableBarrierInteraction ||
-        config.disableBarrierInteraction) {
+    if (showcaseView.disableBarrierInteraction || config.disableBarrierInteraction) {
       return;
     }
     _nextIfAny();
@@ -215,9 +211,7 @@ class ShowcaseController {
   }) {
     if (!showcaseView.enableShowcase || !showcaseView.isShowcaseRunning) return;
     _runLater(() {
-      if (!context.mounted ||
-          !showcaseView.enableShowcase ||
-          !showcaseView.isShowcaseRunning) {
+      if (!context.mounted || !showcaseView.enableShowcase || !showcaseView.isShowcaseRunning) {
         return;
       }
 
@@ -275,9 +269,7 @@ class ShowcaseController {
   void _initRootWidget() {
     final rootWidget = _context.findRootAncestorStateOfType<State<Overlay>>();
     rootRenderObject = rootWidget?.context.findRenderObject() as RenderBox?;
-    rootWidgetSize = rootWidget == null
-        ? MediaQuery.sizeOf(_context)
-        : rootRenderObject?.size;
+    rootWidgetSize = rootWidget == null ? MediaQuery.sizeOf(_context) : rootRenderObject?.size;
   }
 
   /// Builds the overlay widgets for the target widget.
@@ -313,8 +305,10 @@ class ShowcaseController {
             ),
             ToolTipWrapper(
               title: config.title,
+              titleTextSpans: config.titleTextSpans,
               titleTextAlign: config.titleTextAlign,
               description: config.description,
+              descriptionTextSpans: config.descriptionTextSpans,
               descriptionTextAlign: config.descriptionTextAlign,
               titleAlignment: config.titleAlignment,
               descriptionAlignment: config.descriptionAlignment,
@@ -324,15 +318,10 @@ class ShowcaseController {
               tooltipBackgroundColor: config.tooltipBackgroundColor,
               textColor: config.textColor,
               showArrow: config.showArrow,
-              onTooltipTap: config.disposeOnTap ?? config.onToolTipClick != null
-                  ? _getOnTooltipTap
-                  : null,
+              onTooltipTap: config.disposeOnTap ?? config.onToolTipClick != null ? _getOnTooltipTap : null,
               tooltipPadding: config.tooltipPadding,
-              disableMovingAnimation: config.disableMovingAnimation ??
-                  showcaseView.disableMovingAnimation,
-              disableScaleAnimation: (config.disableScaleAnimation ??
-                      showcaseView.disableScaleAnimation) ||
-                  config.container != null,
+              disableMovingAnimation: config.disableMovingAnimation ?? showcaseView.disableMovingAnimation,
+              disableScaleAnimation: (config.disableScaleAnimation ?? showcaseView.disableScaleAnimation) || config.container != null,
               movingAnimationDuration: config.movingAnimationDuration,
               tooltipBorderRadius: config.tooltipBorderRadius,
               scaleAnimationDuration: config.scaleAnimationDuration,
@@ -397,9 +386,7 @@ class ShowcaseController {
   /// @return List of tooltip action widgets
   List<Widget> _getTooltipActions() {
     final doesHaveLocalActions = config.tooltipActions != null;
-    final actionData = doesHaveLocalActions
-        ? config.tooltipActions!
-        : showcaseView.globalTooltipActions ?? [];
+    final actionData = doesHaveLocalActions ? config.tooltipActions! : showcaseView.globalTooltipActions ?? [];
     final actionDataLength = actionData.length;
     final actionConfig = _getTooltipActionConfig();
     final actionGap = actionConfig.actionGap;
@@ -407,19 +394,12 @@ class ShowcaseController {
 
     return [
       for (var i = 0; i < actionDataLength; i++)
-        if (doesHaveLocalActions ||
-            !actionData[i]
-                .hideActionWidgetForShowcase
-                .contains(config.showcaseKey))
+        if (doesHaveLocalActions || !actionData[i].hideActionWidgetForShowcase.contains(config.showcaseKey))
           // TODO: Switch to using spacing in [ActionWidget].
           Padding(
             padding: EdgeInsetsDirectional.only(
-              end: i == (actionDataLength - 1) || areActionsInsideHorizontal
-                  ? 0
-                  : actionGap,
-              bottom: i == (actionDataLength - 1) || !areActionsInsideHorizontal
-                  ? 0
-                  : actionGap,
+              end: i == (actionDataLength - 1) || areActionsInsideHorizontal ? 0 : actionGap,
+              bottom: i == (actionDataLength - 1) || !areActionsInsideHorizontal ? 0 : actionGap,
             ),
             child: TooltipActionButtonWidget(
               config: actionData[i],
@@ -436,15 +416,12 @@ class ShowcaseController {
   ///
   /// @return The tooltip action configuration to use
   TooltipActionConfig _getTooltipActionConfig() {
-    return config.tooltipActionConfig ??
-        showcaseView.globalTooltipActionConfig ??
-        const TooltipActionConfig();
+    return config.tooltipActionConfig ?? showcaseView.globalTooltipActionConfig ?? const TooltipActionConfig();
   }
 
   /// Retrieves the floating action widget if available. Prefers local
   /// configuration over global when available.
-  FloatingActionWidget? get _getFloatingActionWidget =>
-      config.floatingActionWidget ?? globalFloatingActionWidget;
+  FloatingActionWidget? get _getFloatingActionWidget => config.floatingActionWidget ?? globalFloatingActionWidget;
 
   /// Schedules a callback to run after the current frame with guarantee.
   void _runLater(VoidCallback process) {
@@ -485,7 +462,6 @@ class ShowcaseController {
 
   @override
   bool operator ==(Object other) {
-    return identical(this, other) ||
-        other is ShowcaseController && other.key == key && other.id == id;
+    return identical(this, other) || other is ShowcaseController && other.key == key && other.id == id;
   }
 }

@@ -62,7 +62,9 @@ class Showcase extends StatefulWidget {
     required GlobalKey key,
     required this.child,
     this.title,
+    this.titleTextSpans,
     this.description,
+    this.descriptionTextSpans,
     this.titleTextAlign = TextAlign.start,
     this.descriptionTextAlign = TextAlign.start,
     this.titleAlignment = Alignment.center,
@@ -84,8 +86,7 @@ class Showcase extends StatefulWidget {
     this.movingAnimationDuration = const Duration(milliseconds: 2000),
     this.disableMovingAnimation,
     this.disableScaleAnimation,
-    this.tooltipPadding =
-        const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+    this.tooltipPadding = const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
     this.onToolTipClick,
     this.targetPadding = EdgeInsets.zero,
     this.blurValue,
@@ -208,7 +209,9 @@ class Showcase extends StatefulWidget {
         scaleAnimationAlignment = null,
         disableScaleAnimation = null,
         title = null,
+        titleTextSpans = null,
         description = null,
+        descriptionTextSpans = null,
         titleTextAlign = TextAlign.start,
         descriptionTextAlign = TextAlign.start,
         titleAlignment = Alignment.center,
@@ -264,8 +267,12 @@ class Showcase extends StatefulWidget {
   /// Represents subject line of target widget
   final String? title;
 
+  final List<TextSpan>? titleTextSpans;
+
   /// Represents summary description of target widget
   final String? description;
+
+  final List<TextSpan>? descriptionTextSpans;
 
   /// ShapeBorder of the highlighted box when target widget will be showcased.
   ///
@@ -585,9 +592,7 @@ class _ShowcaseState extends State<Showcase> {
 
     _controller.recalculateRootWidgetSize(
       context,
-      shouldUpdateOverlay:
-          _showCaseWidgetManager.showcaseView.getActiveShowcaseKey ==
-              widget.showcaseKey,
+      shouldUpdateOverlay: _showCaseWidgetManager.showcaseView.getActiveShowcaseKey == widget.showcaseKey,
     );
     return widget.child;
   }
@@ -609,8 +614,7 @@ class _ShowcaseState extends State<Showcase> {
     if (manager == _showCaseWidgetManager) return;
     _showCaseWidgetManager = manager;
     ShowcaseService.instance.addController(
-      controller: _controller
-        ..showcaseView = _showCaseWidgetManager.showcaseView,
+      controller: _controller..showcaseView = _showCaseWidgetManager.showcaseView,
       key: widget.showcaseKey,
       id: _uniqueId,
       scope: _showCaseWidgetManager.name,

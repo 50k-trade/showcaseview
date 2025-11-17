@@ -68,16 +68,20 @@ class ToolTipWrapper extends StatefulWidget {
     required this.targetTooltipGap,
     this.scaleAnimationAlignment,
     this.tooltipPosition,
+    this.titleTextSpans,
     this.titlePadding,
     this.descriptionPadding,
     this.titleTextDirection,
     this.descriptionTextDirection,
+    this.descriptionTextSpans,
     super.key,
   });
 
   final String? title;
+  final List<TextSpan>? titleTextSpans;
   final TextAlign titleTextAlign;
   final String? description;
+  final List<TextSpan>? descriptionTextSpans;
   final TextAlign descriptionTextAlign;
   final AlignmentGeometry titleAlignment;
   final AlignmentGeometry descriptionAlignment;
@@ -113,10 +117,8 @@ class ToolTipWrapper extends StatefulWidget {
   State<ToolTipWrapper> createState() => _ToolTipWrapperState();
 }
 
-class _ToolTipWrapperState extends State<ToolTipWrapper>
-    with TickerProviderStateMixin {
-  late final AnimationController _movingAnimationController =
-      AnimationController(
+class _ToolTipWrapperState extends State<ToolTipWrapper> with TickerProviderStateMixin {
+  late final AnimationController _movingAnimationController = AnimationController(
     duration: widget.movingAnimationDuration,
     vsync: this,
   );
@@ -126,8 +128,7 @@ class _ToolTipWrapperState extends State<ToolTipWrapper>
     curve: Curves.easeInOut,
   );
 
-  late final AnimationController _scaleAnimationController =
-      AnimationController(
+  late final AnimationController _scaleAnimationController = AnimationController(
     duration: widget.scaleAnimationDuration,
     vsync: this,
     lowerBound: widget.disableScaleAnimation ? 1 : 0,
@@ -151,15 +152,13 @@ class _ToolTipWrapperState extends State<ToolTipWrapper>
         ..forward();
     }
     if (!widget.disableMovingAnimation) _movingAnimationController.forward();
-    widget.showcaseController.reverseAnimationCallback =
-        widget.disableScaleAnimation ? null : _scaleAnimationController.reverse;
+    widget.showcaseController.reverseAnimationCallback = widget.disableScaleAnimation ? null : _scaleAnimationController.reverse;
   }
 
   @override
   Widget build(BuildContext context) {
     assert(
-      widget.container != null ||
-          (widget.title != null || widget.description != null),
+      widget.container != null || (widget.title != null || widget.description != null),
       'Provide either a custom container or a title/description for the '
       'tooltip. Both cannot be null.',
     );
@@ -174,30 +173,27 @@ class _ToolTipWrapperState extends State<ToolTipWrapper>
 
     final defaultToolTipWidget = widget.container != null
         ? MouseRegion(
-            cursor: widget.onTooltipTap == null
-                ? MouseCursor.defer
-                : SystemMouseCursors.click,
+            cursor: widget.onTooltipTap == null ? MouseCursor.defer : SystemMouseCursors.click,
             child: GestureDetector(
               onTap: widget.onTooltipTap,
               child: widget.container ?? const SizedBox.shrink(),
             ),
           )
         : MouseRegion(
-            cursor: widget.onTooltipTap == null
-                ? MouseCursor.defer
-                : SystemMouseCursors.click,
+            cursor: widget.onTooltipTap == null ? MouseCursor.defer : SystemMouseCursors.click,
             child: GestureDetector(
               onTap: widget.onTooltipTap,
               child: Container(
                 padding: widget.tooltipPadding,
                 decoration: BoxDecoration(
                   color: widget.tooltipBackgroundColor,
-                  borderRadius: widget.tooltipBorderRadius ??
-                      const BorderRadius.all(Radius.circular(8)),
+                  borderRadius: widget.tooltipBorderRadius ?? const BorderRadius.all(Radius.circular(8)),
                 ),
                 child: ToolTipContent(
                   title: widget.title,
+                  titleTextSpans: widget.titleTextSpans,
                   description: widget.description,
+                  descriptionTextSpans: widget.descriptionTextSpans,
                   titleTextAlign: widget.titleTextAlign,
                   descriptionTextAlign: widget.descriptionTextAlign,
                   titleAlignment: widget.titleAlignment,
@@ -225,21 +221,15 @@ class _ToolTipWrapperState extends State<ToolTipWrapper>
         targetPosition: targetPosition,
         targetSize: targetSize,
         position: widget.tooltipPosition,
-        screenSize: widget.showcaseController.rootWidgetSize ??
-            MediaQuery.sizeOf(context),
+        screenSize: widget.showcaseController.rootWidgetSize ?? MediaQuery.sizeOf(context),
         hasArrow: widget.showArrow,
         targetPadding: widget.targetPadding,
         scaleAlignment: widget.scaleAnimationAlignment,
-        hasSecondBox: widget.tooltipActions.isNotEmpty &&
-            (widget.tooltipActionConfig.position.isOutside ||
-                widget.container != null),
+        hasSecondBox: widget.tooltipActions.isNotEmpty && (widget.tooltipActionConfig.position.isOutside || widget.container != null),
         toolTipSlideEndDistance: widget.toolTipSlideEndDistance,
-        gapBetweenContentAndAction:
-            widget.tooltipActionConfig.gapBetweenContentAndAction,
+        gapBetweenContentAndAction: widget.tooltipActionConfig.gapBetweenContentAndAction,
         screenEdgePadding: widget.toolTipMargin,
-        showcaseOffset: widget.showcaseController.rootRenderObject
-                ?.localToGlobal(Offset.zero) ??
-            Offset.zero,
+        showcaseOffset: widget.showcaseController.rootRenderObject?.localToGlobal(Offset.zero) ?? Offset.zero,
         targetTooltipGap: widget.targetTooltipGap,
         children: [
           // We have to use UniqueKey here to avoid the issue with the
@@ -252,9 +242,7 @@ class _ToolTipWrapperState extends State<ToolTipWrapper>
             key: UniqueKey(),
             child: defaultToolTipWidget,
           ),
-          if (widget.tooltipActions.isNotEmpty &&
-              (widget.tooltipActionConfig.position.isOutside ||
-                  widget.container != null))
+          if (widget.tooltipActions.isNotEmpty && (widget.tooltipActionConfig.position.isOutside || widget.container != null))
             _TooltipLayoutId(
               id: TooltipLayoutSlot.actionBox,
               key: UniqueKey(),
@@ -292,8 +280,7 @@ class _ToolTipWrapperState extends State<ToolTipWrapper>
       if (status == AnimationStatus.completed) {
         _movingAnimationController.reverse();
       }
-      if (_movingAnimationController.isDismissed &&
-          !widget.disableMovingAnimation) {
+      if (_movingAnimationController.isDismissed && !widget.disableMovingAnimation) {
         _movingAnimationController.forward();
       }
     });

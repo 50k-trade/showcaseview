@@ -30,6 +30,7 @@ class DefaultTooltipTextWidget extends StatelessWidget {
     this.textDirection,
     this.textColor,
     this.textStyle,
+    this.textSpans,
     super.key,
   });
 
@@ -40,6 +41,7 @@ class DefaultTooltipTextWidget extends StatelessWidget {
   final TextDirection? textDirection;
   final Color? textColor;
   final TextStyle? textStyle;
+  final List<TextSpan>? textSpans;
 
   @override
   Widget build(BuildContext context) {
@@ -47,15 +49,14 @@ class DefaultTooltipTextWidget extends StatelessWidget {
       alignment: alignment,
       child: Padding(
         padding: padding,
-        child: Text(
-          text,
-          textAlign: textAlign,
+        child: RichText(
+          textAlign: textAlign ?? TextAlign.start,
           textDirection: textDirection,
-          style: textStyle ??
-              Theme.of(context)
-                  .textTheme
-                  .titleSmall
-                  ?.merge(TextStyle(color: textColor)),
+          text: TextSpan(
+            text: text,
+            style: textStyle ?? Theme.of(context).textTheme.titleSmall?.merge(TextStyle(color: textColor)),
+            children: textSpans,
+          ),
         ),
       ),
     );

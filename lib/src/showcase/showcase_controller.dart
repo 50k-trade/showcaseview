@@ -339,6 +339,7 @@ class ShowcaseController {
               targetPadding: config.targetPadding,
               targetTooltipGap: config.targetTooltipGap,
               showcaseController: this,
+              tooltipPositionedWidget: config.tooltipPositionedWidget,
             ),
             if (_getFloatingActionWidget case final floatAction?) floatAction,
           ];

@@ -74,6 +74,7 @@ class ToolTipWrapper extends StatefulWidget {
     this.titleTextDirection,
     this.descriptionTextDirection,
     this.descriptionTextSpans,
+    this.tooltipPositionedWidget,
     super.key,
   });
 
@@ -112,6 +113,7 @@ class ToolTipWrapper extends StatefulWidget {
   final EdgeInsets targetPadding;
   final ShowcaseController showcaseController;
   final double targetTooltipGap;
+  final Positioned? tooltipPositionedWidget;
 
   @override
   State<ToolTipWrapper> createState() => _ToolTipWrapperState();
@@ -183,31 +185,38 @@ class _ToolTipWrapperState extends State<ToolTipWrapper> with TickerProviderStat
             cursor: widget.onTooltipTap == null ? MouseCursor.defer : SystemMouseCursors.click,
             child: GestureDetector(
               onTap: widget.onTooltipTap,
-              child: Container(
-                padding: widget.tooltipPadding,
-                decoration: BoxDecoration(
-                  color: widget.tooltipBackgroundColor,
-                  borderRadius: widget.tooltipBorderRadius ?? const BorderRadius.all(Radius.circular(8)),
-                ),
-                child: ToolTipContent(
-                  title: widget.title,
-                  titleTextSpans: widget.titleTextSpans,
-                  description: widget.description,
-                  descriptionTextSpans: widget.descriptionTextSpans,
-                  titleTextAlign: widget.titleTextAlign,
-                  descriptionTextAlign: widget.descriptionTextAlign,
-                  titleAlignment: widget.titleAlignment,
-                  descriptionAlignment: widget.descriptionAlignment,
-                  textColor: widget.textColor,
-                  titleTextStyle: widget.titleTextStyle,
-                  descTextStyle: widget.descTextStyle,
-                  titlePadding: widget.titlePadding,
-                  descriptionPadding: widget.descriptionPadding,
-                  titleTextDirection: widget.titleTextDirection,
-                  descriptionTextDirection: widget.descriptionTextDirection,
-                  tooltipActionConfig: widget.tooltipActionConfig,
-                  tooltipActions: widget.tooltipActions,
-                ),
+              child: Stack(
+                clipBehavior: Clip.none,
+                alignment: Alignment.center,
+                children: [
+                  Container(
+                    padding: widget.tooltipPadding,
+                    decoration: BoxDecoration(
+                      color: widget.tooltipBackgroundColor,
+                      borderRadius: widget.tooltipBorderRadius ?? const BorderRadius.all(Radius.circular(8)),
+                    ),
+                    child: ToolTipContent(
+                      title: widget.title,
+                      titleTextSpans: widget.titleTextSpans,
+                      description: widget.description,
+                      descriptionTextSpans: widget.descriptionTextSpans,
+                      titleTextAlign: widget.titleTextAlign,
+                      descriptionTextAlign: widget.descriptionTextAlign,
+                      titleAlignment: widget.titleAlignment,
+                      descriptionAlignment: widget.descriptionAlignment,
+                      textColor: widget.textColor,
+                      titleTextStyle: widget.titleTextStyle,
+                      descTextStyle: widget.descTextStyle,
+                      titlePadding: widget.titlePadding,
+                      descriptionPadding: widget.descriptionPadding,
+                      titleTextDirection: widget.titleTextDirection,
+                      descriptionTextDirection: widget.descriptionTextDirection,
+                      tooltipActionConfig: widget.tooltipActionConfig,
+                      tooltipActions: widget.tooltipActions,
+                    ),
+                  ),
+                  if (widget.tooltipPositionedWidget != null) widget.tooltipPositionedWidget!
+                ],
               ),
             ),
           );

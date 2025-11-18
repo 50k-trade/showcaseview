@@ -113,6 +113,7 @@ class Showcase extends StatefulWidget {
     this.enableAutoScroll,
     this.floatingActionWidget,
     this.targetTooltipGap = 10,
+    this.tooltipPositionedWidget,
   })  : container = null,
         showcaseKey = key,
         assert(
@@ -226,6 +227,7 @@ class Showcase extends StatefulWidget {
         descriptionPadding = null,
         titleTextDirection = null,
         descriptionTextDirection = null,
+        tooltipPositionedWidget = null,
         showcaseKey = key,
         assert(
           container != null,
@@ -528,6 +530,8 @@ class Showcase extends StatefulWidget {
   ///
   /// Defaults to 10.
   final double targetTooltipGap;
+
+  final Positioned? tooltipPositionedWidget;
 
   @override
   State<Showcase> createState() => _ShowcaseState();

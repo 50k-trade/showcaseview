@@ -40,6 +40,7 @@ class TargetWidget extends StatelessWidget {
     this.onDoubleTap,
     this.onLongPress,
     this.disableDefaultChildGestures = false,
+    this.targetPositionedWidget,
     super.key,
   });
 
@@ -73,6 +74,8 @@ class TargetWidget extends StatelessWidget {
   /// Padding applied around the target to increase its highlight area.
   final EdgeInsets targetPadding;
 
+  final Positioned? targetPositionedWidget;
+
   @override
   Widget build(BuildContext context) {
     final targetWidgetContent = GestureDetector(
@@ -80,15 +83,20 @@ class TargetWidget extends StatelessWidget {
       onLongPress: onLongPress,
       onDoubleTap: onDoubleTap,
       behavior: HitTestBehavior.translucent,
-      child: Container(
-        height: size.height.abs(),
-        width: size.width.abs(),
-        margin: targetPadding,
-        decoration: ShapeDecoration(
-          shape: radius == null
-              ? shapeBorder
-              : RoundedRectangleBorder(borderRadius: radius!),
-        ),
+      child: Stack(
+        clipBehavior: Clip.none,
+        alignment: Alignment.center,
+        children: [
+          Container(
+            height: size.height.abs(),
+            width: size.width.abs(),
+            margin: targetPadding,
+            decoration: ShapeDecoration(
+              shape: radius == null ? shapeBorder : RoundedRectangleBorder(borderRadius: radius!),
+            ),
+          ),
+          if (targetPositionedWidget != null) targetPositionedWidget!
+        ],
       ),
     );
     return Positioned(

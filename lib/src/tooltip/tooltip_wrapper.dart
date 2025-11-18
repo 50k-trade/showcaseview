@@ -183,13 +183,13 @@ class _ToolTipWrapperState extends State<ToolTipWrapper> with TickerProviderStat
           )
         : MouseRegion(
             cursor: widget.onTooltipTap == null ? MouseCursor.defer : SystemMouseCursors.click,
-            child: GestureDetector(
-              onTap: widget.onTooltipTap,
-              child: Stack(
-                clipBehavior: Clip.none,
-                alignment: Alignment.center,
-                children: [
-                  Container(
+            child: Stack(
+              clipBehavior: Clip.none,
+              alignment: Alignment.center,
+              children: [
+                GestureDetector(
+                  onTap: widget.onTooltipTap,
+                  child: Container(
                     padding: widget.tooltipPadding,
                     decoration: BoxDecoration(
                       color: widget.tooltipBackgroundColor,
@@ -215,9 +215,9 @@ class _ToolTipWrapperState extends State<ToolTipWrapper> with TickerProviderStat
                       tooltipActions: widget.tooltipActions,
                     ),
                   ),
-                  if (widget.tooltipPositionedWidget != null) widget.tooltipPositionedWidget!
-                ],
-              ),
+                ),
+                if (widget.tooltipPositionedWidget != null) widget.tooltipPositionedWidget!
+              ],
             ),
           );
     return Material(

@@ -302,6 +302,7 @@ class ShowcaseController {
               shapeBorder: config.targetShapeBorder,
               disableDefaultChildGestures: config.disableDefaultTargetGestures,
               targetPadding: config.targetPadding,
+              targetPositionedWidget: config.targetPositionedWidget,
             ),
             ToolTipWrapper(
               title: config.title,

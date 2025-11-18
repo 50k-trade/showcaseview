@@ -114,6 +114,7 @@ class Showcase extends StatefulWidget {
     this.floatingActionWidget,
     this.targetTooltipGap = 10,
     this.tooltipPositionedWidget,
+    this.targetPositionedWidget,
   })  : container = null,
         showcaseKey = key,
         assert(
@@ -228,6 +229,7 @@ class Showcase extends StatefulWidget {
         titleTextDirection = null,
         descriptionTextDirection = null,
         tooltipPositionedWidget = null,
+        targetPositionedWidget = null,
         showcaseKey = key,
         assert(
           container != null,
@@ -532,6 +534,8 @@ class Showcase extends StatefulWidget {
   final double targetTooltipGap;
 
   final Positioned? tooltipPositionedWidget;
+
+  final Positioned? targetPositionedWidget;
 
   @override
   State<Showcase> createState() => _ShowcaseState();

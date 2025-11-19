@@ -204,6 +204,7 @@ class Showcase extends StatefulWidget {
     this.enableAutoScroll,
     this.toolTipMargin = 14,
     this.targetTooltipGap = 10,
+    this.targetPositionedWidget,
   })  : showArrow = false,
         onToolTipClick = null,
         scaleAnimationDuration = const Duration(milliseconds: 300),
@@ -229,7 +230,6 @@ class Showcase extends StatefulWidget {
         titleTextDirection = null,
         descriptionTextDirection = null,
         tooltipPositionedWidget = null,
-        targetPositionedWidget = null,
         showcaseKey = key,
         assert(
           container != null,
